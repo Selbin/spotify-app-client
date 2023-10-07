@@ -88,12 +88,12 @@ const Home = () => {
                 </div>
                 <div>
                   <p>
-                    <b>Name:</b> {item.name}
+                    <b> {item.name}</b>
                   </p>
                 </div>
                 <div style={{ width: "40vw" }}>
                   <p>
-                    <b>Description:</b> {item.description}
+                    {item.description}
                   </p>
                 </div>
                 <div>
