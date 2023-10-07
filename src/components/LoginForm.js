@@ -1,5 +1,5 @@
 // LoginForm.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,12 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
 
+  useEffect(()=>{
+    if(localStorage.getItem('tokens')){
+      navigate('/home')
+    }
+  },[navigate])
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);

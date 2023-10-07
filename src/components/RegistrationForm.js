@@ -1,5 +1,5 @@
 // RegistrationForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -15,6 +15,11 @@ const RegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  useEffect(()=>{
+    if(localStorage.getItem('tokens')){
+      navigate('/home')
+    }
+  },[navigate])
 
   const handleRegistration = async (e) => {
     e.preventDefault();

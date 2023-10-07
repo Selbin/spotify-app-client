@@ -11,6 +11,7 @@ const Home = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [userPlaylists, setUserPlaylists] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false)
+
   const getData = async () => {
     try {
       setIsLoading(true);
@@ -29,6 +30,13 @@ const Home = () => {
       showErrorPopup(error.msg);
     }
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      getData()
+    }
+  };
+
   return (
     <>
       <ToastContainer />
@@ -38,6 +46,7 @@ const Home = () => {
           type="text"
           placeholder="Spotify ID"
           value={userId}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setUserId(e.target.value)}
         />
         <button className="button" disabled={isLoading} onClick={getData}>
