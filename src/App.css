@@ -27,7 +27,17 @@
 .App-link {
   color: #61dafb;
 }
+.login-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; 
+}
 
+input {
+  margin-bottom: 10px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +46,46 @@
     transform: rotate(360deg);
   }
 }
+
+.inputBox{
+  width: 200px;
+  height: 40px;
+  margin-left: 10px;
+  margin-top: 5px;
+  padding: 0px 10px ;
+}
+
+.button{
+  width: 120px;
+  height: 40px;
+  background-color: rgb(57, 61, 63);
+  margin-left: 10px;
+  margin-top: -5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: azure;
+}
+
+.search-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; 
+  width: 100vw;
+}
+
+.content-container{
+  display: flex;
+  margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.content-sub-container{
+  width: 50%;
+}
+
+
