@@ -107,7 +107,7 @@ const Home = () => {
         />
         <button
           className="button"
-          disabled={isLoading || userId}
+          disabled={isLoading}
           onClick={() => {
             if (userId) {
               getProfileData();
