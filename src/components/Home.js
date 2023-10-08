@@ -75,11 +75,13 @@ const Home = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      getProfileData();
-      if (currentPage !== 1) {
-        setCurrentPage(1);
-      } else {
-        getPlaylistData();
+      if (userId) {
+        getProfileData();
+        if (currentPage !== 1) {
+          setCurrentPage(1);
+        } else {
+          getPlaylistData();
+        }
       }
     }
   };
@@ -105,13 +107,15 @@ const Home = () => {
         />
         <button
           className="button"
-          disabled={isLoading}
+          disabled={isLoading || userId}
           onClick={() => {
-            getProfileData();
-            if (currentPage !== 1) {
-              setCurrentPage(1);
-            } else {
-              getPlaylistData();
+            if (userId) {
+              getProfileData();
+              if (currentPage !== 1) {
+                setCurrentPage(1);
+              } else {
+                getPlaylistData();
+              }
             }
           }}
         >
