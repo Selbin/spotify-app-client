@@ -143,7 +143,11 @@ const Home = () => {
             <div>
               <p>
                 <b>Spotify Link: </b>
-                <a href={userProfile.external_urls.spotify}>
+                <a
+                  href={userProfile.external_urls.spotify}
+                  rel="noreferrer"
+                  target="_blank"
+                >
                   {userProfile.external_urls.spotify}
                 </a>
               </p>
@@ -181,7 +185,11 @@ const Home = () => {
                 <div>
                   <p>
                     <b>Playlist link:</b>{" "}
-                    <a href={item.external_urls.spotify}>
+                    <a
+                      href={item.external_urls.spotify}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
                       {item.external_urls.spotify}
                     </a>
                   </p>
