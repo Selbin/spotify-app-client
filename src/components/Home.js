@@ -1,29 +1,40 @@
 // LoginForm.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 
 import showErrorPopup from "../utils/triggerToast";
+import Loading from "./Loading";
+import Pagination from "./Pagination";
 
 const Home = () => {
   const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [userPlaylists, setUserPlaylists] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const getData = async () => {
+  const itemsPerPage = 3;
+  const getPlaylistData = async () => {
     try {
       setIsLoading(true);
+      const accessToken = JSON.parse(
+        localStorage.getItem("tokens")
+      ).accessToken;
+
+      const options = {
+        headers: {
+          authorization: `bearer ${accessToken}`,
+        },
+      };
+
       const playlistsResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}spotify/playlists/${userId}`
+        `${process.env.REACT_APP_API_URL}spotify/playlists/${userId}?page=${currentPage}&limit=${itemsPerPage}`,
+        options
       );
-      const profileResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}spotify/user/${userId}`
-      );
+
       setUserPlaylists(playlistsResponse.data);
-      setUserProfile(profileResponse.data);
-      setIsEmpty(!profileResponse.data)
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -31,11 +42,50 @@ const Home = () => {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      getData()
+  const getProfileData = async () => {
+    try {
+      setIsLoading(true);
+      const accessToken = JSON.parse(
+        localStorage.getItem("tokens")
+      ).accessToken;
+
+      const options = {
+        headers: {
+          authorization: `bearer ${accessToken}`,
+        },
+      };
+
+      const profileResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}spotify/user/${userId}`,
+        options
+      );
+
+      setUserProfile(profileResponse.data);
+      setIsEmpty(!profileResponse.data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      showErrorPopup(error.msg);
     }
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      getPlaylistData();
+      getProfileData();
+    }
+  };
+
+  // For making pagination work
+  useEffect(() => {
+    if (userId) {
+      getPlaylistData();
+    }
+  }, [currentPage]);
 
   return (
     <>
@@ -49,11 +99,19 @@ const Home = () => {
           onKeyDown={handleKeyDown}
           onChange={(e) => setUserId(e.target.value)}
         />
-        <button className="button" disabled={isLoading} onClick={getData}>
+        <button
+          className="button"
+          disabled={isLoading}
+          onClick={() => {
+            getProfileData();
+            getPlaylistData();
+          }}
+        >
           {isLoading ? "Loading..." : "Search"}
         </button>
       </div>
-      {isEmpty? <h2 style={{textAlign: "center"}}> Nothing found</h2>:' '}
+      {isLoading ? <Loading /> : ""}
+      {isEmpty ? <h2 style={{ textAlign: "center" }}> Nothing found</h2> : " "}
       {userProfile && userPlaylists && (
         <div className="content-container">
           <div className="content-sub-container">
@@ -86,11 +144,16 @@ const Home = () => {
           </div>
           <div className="content-sub-container">
             <h3 style={{ textAlign: "center" }}>playlists</h3>
-            {userPlaylists.items.map((item, i) => (
+            {userPlaylists?.items.map((item, i) => (
               <>
-                <div>
+                <div key={`item${i}`}>
                   {item.images[0] ? (
-                    <img  width="300" height="200" src={item.images[0].url} alt="Display" />
+                    <img
+                      width="300"
+                      height="200"
+                      src={item.images[0].url}
+                      alt="Display"
+                    />
                   ) : (
                     ""
                   )}
@@ -101,9 +164,7 @@ const Home = () => {
                   </p>
                 </div>
                 <div style={{ width: "40vw" }}>
-                  <p>
-                    {item.description}
-                  </p>
+                  <p>{item.description}</p>
                 </div>
                 <div>
                   <p>
@@ -121,6 +182,12 @@ const Home = () => {
                 <hr />
               </>
             ))}
+            <Pagination
+              currentPage={currentPage}
+              itemsPerPage={itemsPerPage}
+              totalItems={userPlaylists.total}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
       )}
