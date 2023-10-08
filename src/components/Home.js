@@ -1,11 +1,11 @@
 // LoginForm.js
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { ToastContainer } from "react-toastify";
 
 import showErrorPopup from "../utils/triggerToast";
 import Loading from "./Loading";
 import Pagination from "./Pagination";
+import axiosWithAuth from "../api/axiosWithAuth";
 
 const Home = () => {
   const [userId, setUserId] = useState("");
@@ -19,19 +19,8 @@ const Home = () => {
   const getPlaylistData = async () => {
     try {
       setIsLoading(true);
-      const accessToken = JSON.parse(
-        localStorage.getItem("tokens")
-      ).accessToken;
-
-      const options = {
-        headers: {
-          authorization: `bearer ${accessToken}`,
-        },
-      };
-
-      const playlistsResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}spotify/playlists/${userId}?page=${currentPage}&limit=${itemsPerPage}`,
-        options
+      const playlistsResponse = await axiosWithAuth.get(
+        `spotify/playlists/${userId}?page=${currentPage}&limit=${itemsPerPage}`
       );
 
       setUserPlaylists(playlistsResponse.data);
@@ -45,21 +34,7 @@ const Home = () => {
   const getProfileData = async () => {
     try {
       setIsLoading(true);
-      const accessToken = JSON.parse(
-        localStorage.getItem("tokens")
-      ).accessToken;
-
-      const options = {
-        headers: {
-          authorization: `bearer ${accessToken}`,
-        },
-      };
-
-      const profileResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}spotify/user/${userId}`,
-        options
-      );
-
+      const profileResponse = await axiosWithAuth.get(`spotify/user/${userId}`);
       setUserProfile(profileResponse.data);
       setIsEmpty(!profileResponse.data);
       setIsLoading(false);
