@@ -157,8 +157,8 @@ const Home = () => {
           <div className="content-sub-container">
             <h3 style={{ textAlign: "center" }}>playlists</h3>
             {userPlaylists?.items.map((item, i) => (
-              <>
-                <div key={`item${i}`}>
+              <div key={`item${i}`}>
+                <div>
                   {item.images[0] ? (
                     <img
                       width="300"
@@ -192,7 +192,7 @@ const Home = () => {
                   </p>
                 </div>
                 <hr />
-              </>
+              </div>
             ))}
             <Pagination
               currentPage={currentPage}
