@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import LoginForm from "../components/LoginForm";
 import RegistrationForm from "../components/RegistrationForm";
@@ -12,6 +12,7 @@ function AppRouter() {
       <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/Register" element={<RegistrationForm />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route
           path="/home"
           element={
