@@ -75,8 +75,12 @@ const Home = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      getPlaylistData();
       getProfileData();
+      if (currentPage !== 1) {
+        setCurrentPage(1);
+      } else {
+        getPlaylistData();
+      }
     }
   };
 
@@ -104,7 +108,11 @@ const Home = () => {
           disabled={isLoading}
           onClick={() => {
             getProfileData();
-            getPlaylistData();
+            if (currentPage !== 1) {
+              setCurrentPage(1);
+            } else {
+              getPlaylistData();
+            }
           }}
         >
           {isLoading ? "Loading..." : "Search"}
